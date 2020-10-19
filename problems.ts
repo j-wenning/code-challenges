@@ -95,12 +95,12 @@ class BinarySearchTree {
 // TESTS /////////////////////////////////////////////////////////////////
 
 // BST ///////////////////////////////////////////////////////////////////
-const treeTest = new BinarySearchTree (new Set<number> ([342,3415,1,2,3,4,5,6,7,8,9,10,11,12,13,987564,78546123,78654416131854646531,14,15,16,17,18,19,20,3246643,3246,326324,34,5325,-1,-10,-324,-46456,132,-23546236,345345,3245,342,53,45,43,5,767,5,65,8,678,567,43,341,789,46548798,8798754654321,7897,46546546546541,123546,46589741]))
-console.log(treeTest.count())
-treeTest.remove(14)
-treeTest.remove(-10)
-console.log(treeTest.count())
-console.log('max depth:', treeTest.maxDepth())
-treeTest.balance()
-console.log('max depth:', treeTest.maxDepth())
-console.log (treeTest.find(123) ?? '', '\n', treeTest.find(342), '\n', treeTest.find(3246643), '\n', treeTest.find(8))
+// const treeTest = new BinarySearchTree (new Set<number> ([342,3415,1,2,3,4,5,6,7,8,9,10,11,12,13,987564,78546123,78654416131854646531,14,15,16,17,18,19,20,3246643,3246,326324,34,5325,-1,-10,-324,-46456,132,-23546236,345345,3245,342,53,45,43,5,767,5,65,8,678,567,43,341,789,46548798,8798754654321,7897,46546546546541,123546,46589741]))
+// console.log(treeTest.count())
+// treeTest.remove(14)
+// treeTest.remove(-10)
+// console.log(treeTest.count())
+// console.log('max depth:', treeTest.maxDepth())
+// treeTest.balance()
+// console.log('max depth:', treeTest.maxDepth())
+// console.log (treeTest.find(123) ?? '', '\n', treeTest.find(342), '\n', treeTest.find(3246643), '\n', treeTest.find(8))
