@@ -25,7 +25,7 @@ class BinarySearchTree {
         }
         return curNode.l === item || curNode.r === item
     }
-    constructor (vals: Set<number>) { vals.forEach(val => this.add(val)) }
+    constructor (vals: Set<number> = new Set()) { vals.forEach(val => this.add(val)) }
     add (item: number, curNode?: BSTNode): BSTNode
     add (item: BSTNode, curNode?: BSTNode): BSTNode
     add (item: any, curNode: BSTNode = this.root) {
