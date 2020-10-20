@@ -1,3 +1,4 @@
 console.clear()
 
-require('./binary-search-tree')(true)
+require('./binary-search-tree')()
+require('./hash-table')(true)
