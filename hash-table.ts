@@ -10,6 +10,20 @@ class HTNode {
 class HashTable {
     buckets: Array<HTNode>
     private hash: Function
+    private isNode (item: string, curNode: HTNode): boolean
+    private isNode (item: HTNode, curNode: HTNode): boolean
+    private isNode (item: any, curNode: HTNode) {
+        return typeof item === typeof String()
+            ? item === curNode.val
+            : item === curNode
+    }
+    private isNodeParent (item: string, curNode: HTNode): boolean
+    private isNodeParent (item: HTNode, curNode: HTNode): boolean
+    private isNodeParent (item: any, curNode: HTNode) {
+        return typeof item === typeof String()
+            ? item === curNode.child?.val
+            : item === curNode.child
+    }
     constructor (vals: Set<string> = new Set(), minLength: number = 100, maxPadding: number = 50) {
         const max = Math.abs(maxPadding)
         const min = Math.abs(minLength)
@@ -23,38 +37,63 @@ class HashTable {
         }
         vals.forEach(val => this.add(val))
     }
-    add (val: string): boolean {
-        const hash = this.hash(val)
-        const newNode = new HTNode(val)
+    add (item: string): HTNode
+    add (item: HTNode): HTNode
+    add (item: any) {
+        const itemNode: HTNode = typeof item === typeof String()
+            ? new HTNode(item)
+            : item
+        const hash = this.hash(itemNode.val)
         let node: HTNode = this.buckets[hash]
-        if (!node) return !!(this.buckets[hash] = newNode)
+        if (!node) return this.buckets[hash] = itemNode
         while (node.child) {
-            if (node.val === val) return false
+            if (node.val === itemNode.val) return null
             node = node.child
         }
-        return !!(node.child = newNode)
+        return node.child = itemNode
     }
-    find (val: string): boolean {
-        const hash = this.hash(val)
+    remove (item: string): HTNode
+    remove (item: HTNode): HTNode
+    remove (item: any) {
+        const nodeParent = this.find(item, this.isNodeParent)
+        const node = this.find(item)
+        if (nodeParent) nodeParent.child = node.child
+        else {
+            const child = node.child
+            this.buckets[this.hash(node.val)] = child
+        }
+        return node
+    }
+    find (item: string, query?: Function): HTNode
+    find (item: HTNode, query?: Function): HTNode
+    find (item: any, query: Function = this.isNode): HTNode {
+        const hash = this.hash(item?.val || item)
         let node: HTNode = this.buckets[hash]
-        while (val !== node?.val && node) node = node.child
-        return !!node
+        while (node && !query(item, node)) node = node.child
+        return node
     }
 }
 
 module.exports = (tests: boolean): void => {
     if (tests) {
-        const tableTest = new HashTable(new Set(['test', 'neat', 'good', 'amazing', 'fantastic']))
+        const tableTest = new HashTable(new Set(['test', 'sett', 'neat', 'good', 'amazing', 'fantastic']))
         console.log(
             'HASH TABLE TESTS:\n',
             'find(\'test\')', tableTest.find('test'), '\n',
+            'find(\'sett\')', tableTest.find('sett'), '\n',
             'find(\'yess\')', tableTest.find('yess'), '\n',
             'find(\'neat\')', tableTest.find('neat'), '\n',
             'find(\'cool\')', tableTest.find('cool'), '\n',
             'find(\'good\')', tableTest.find('good'), '\n',
             'find(\'great\')', tableTest.find('great'), '\n',
+            'find(\'amazing\')', tableTest.find('amazing'), '\n',
             'find(\'fantastic\')', tableTest.find('fantastic'), '\n',
             'find(\'interesting\')', tableTest.find('interesting'), '\n',
+            'remove(\'test\')', tableTest.remove('test'), '\n',
+            'remove(\'amazing\')', tableTest.remove('amazing'), '\n',
+            'find(\'test\')', tableTest.find('test'), '\n',
+            'find(\'sett\')', tableTest.find('sett'), '\n',
+            'find(\'amazing\')', tableTest.find('amazing'), '\n',
         )
     }
 }
