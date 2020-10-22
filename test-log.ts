@@ -1,14 +1,11 @@
-const processTest = (obj: any, cb: string, ...args: Array<any>) => {
-    const argstr: string = args.map((arg: any) => typeof arg === typeof String()
-        ? `'${arg}'`
-        : arg
-    ).join(', ')
-    console.log(`${cb}(${ argstr }):\n`, obj[cb](...args), '\n')
+const processTest = (cb: Function): void => {
+    let str = cb.toString().trim()
+    str = /^\(\)\s*=>\s*/.test(str)
+        ? str.replace(/^\(\)\s*=>\s*/, '')
+        : str.match(/(?<=return).*\(.*\)/g)[0]
+    console.log(str.trim(), '\n', cb(), '\n')
 }
 
-module.exports = (...tests: Array<Array<any>>) => {
-    tests.forEach((test: Array<any>) => {
-        const [obj, cb, ...args] = test
-        processTest(obj || global, cb, ...args)
-    })
+module.exports = (...tests: Array<Function>) => {
+    tests.forEach((test: Function) => processTest(test) )
 }
