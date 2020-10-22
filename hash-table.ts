@@ -64,10 +64,8 @@ class HashTable {
         }
         return node
     }
-    find (item: string, query?: Function): HTNode
-    find (item: HTNode, query?: Function): HTNode
-    find (item: any, query: Function = this.isNode): HTNode {
-        const hash = this.hash(item?.val || item)
+    find (item: string, query: Function = this.isNode): HTNode {
+        const hash = this.hash(item)
         let node: HTNode = this.buckets[hash]
         while (node && !query(item, node)) node = node.child
         return node
@@ -76,24 +74,17 @@ class HashTable {
 
 module.exports = (tests: boolean): void => {
     if (tests) {
+        const testLog = require('./test-log')
         const tableTest = new HashTable(new Set(['test', 'sett', 'neat', 'good', 'amazing', 'fantastic']))
-        console.log(
-            'HASH TABLE TESTS:\n',
-            'find(\'test\')', tableTest.find('test'), '\n',
-            'find(\'sett\')', tableTest.find('sett'), '\n',
-            'find(\'yess\')', tableTest.find('yess'), '\n',
-            'find(\'neat\')', tableTest.find('neat'), '\n',
-            'find(\'cool\')', tableTest.find('cool'), '\n',
-            'find(\'good\')', tableTest.find('good'), '\n',
-            'find(\'great\')', tableTest.find('great'), '\n',
-            'find(\'amazing\')', tableTest.find('amazing'), '\n',
-            'find(\'fantastic\')', tableTest.find('fantastic'), '\n',
-            'find(\'interesting\')', tableTest.find('interesting'), '\n',
-            'remove(\'test\')', tableTest.remove('test'), '\n',
-            'remove(\'amazing\')', tableTest.remove('amazing'), '\n',
-            'find(\'test\')', tableTest.find('test'), '\n',
-            'find(\'sett\')', tableTest.find('sett'), '\n',
-            'find(\'amazing\')', tableTest.find('amazing'), '\n',
+        console.log('\n\nHASH TABLE TESTS\n')
+        testLog(
+            () => tableTest.find('cool'),
+            () => tableTest.find('test'),
+            () => tableTest.find('sett'),
+            () => tableTest.find('neat'),
+            () => tableTest.remove('test'),
+            () => tableTest.find('test'),
+            () => tableTest.find('sett'),
         )
     }
 }
